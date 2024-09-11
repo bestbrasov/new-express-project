@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import nodemailer from 'nodemailer';
+import { fetchCourses } from '../fetch_courses.ts';
 import  {sql}  from '@vercel/postgres';
 
 const app = express();
@@ -87,6 +88,17 @@ try {
     res.status(500).json({ error: 'Internal Server Error' });
 }
 });
+
+// Route to fetch and insert courses
+app.get('/fetch-courses', async (req: Request, res: Response) => {
+    try {
+      await fetchCourses();
+      res.status(200).send('Courses fetched and inserted successfully.');
+    } catch (error) {
+      console.error('Error in /fetch-courses route:', error);
+      res.status(500).send('Failed to fetch and insert courses');
+    }
+  });
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
