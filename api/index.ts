@@ -46,15 +46,15 @@ app.post('/send-email', (req: Request, res: Response) => {
     text: `Name: ${name}\n Tel: ${tel}\n Email: ${email}\n Message: ${message}`,
   };
 
-//   transporter.sendMail(mailOptions, (error, info) => {
-//     if (error) {
-//       console.error('Error sending email:', error);
-//       res.status(500).send('Failed to send email');
-//     } else {
-//       console.log('Email sent: ' + info.response);
-//       res.status(200).send('Email sent successfully');
-//     }
-//   });
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error sending email:', error);
+      res.status(500).send('Failed to send email');
+    } else {
+      console.log('Email sent: ' + info.response);
+      res.status(200).send('Email sent successfully');
+    }
+  });
  });
 
 // New GET route to test server
