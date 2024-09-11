@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import nodemailer from 'nodemailer';
-import { sql } from '@vercel/postgres';
+// import { sql } from '@vercel/postgres';
 
 const app = express();
 const port = 3004;
