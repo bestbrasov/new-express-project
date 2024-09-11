@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-// import nodemailer from 'nodemailer';
+import nodemailer from 'nodemailer';
 
 const app = express();
 const port = 3004;
@@ -18,13 +18,13 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Configure nodemailer with your email service details
-// const transporter = nodemailer.createTransport({
-//   service: 'gmail',
-//   auth: {
-//     user: process.env.REACT_APP_EMAIL_USER,
-//     pass: process.env.REACT_APP_EMAIL_PASS,
-//   },
-// });
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.REACT_APP_EMAIL_USER,
+    pass: process.env.REACT_APP_EMAIL_PASS,
+  },
+});
 
 // Debugging: Print environment variables to ensure they are loaded correctly
 console.log('Email User:', process.env.REACT_APP_EMAIL_USER);
