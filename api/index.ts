@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import nodemailer from 'nodemailer';
-// import { sql } from '@vercel/postgres';
 
 const app = express();
 const port = 3004;
@@ -56,32 +55,6 @@ app.post('/send-email', (req: Request, res: Response) => {
       res.status(200).send('Email sent successfully');
     }
   });
-});
-
-// Route to fetch all courses
-app.get('/api/courses', async (req: Request, res: Response) => {
-  try {
-    const result = await sql`SELECT * FROM cursuri`;
-    res.json(result.rows);
-  } catch (err) {
-    console.error('Error fetching courses:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-// Route to fetch a single course by cod
-app.get('/api/courses/:cod', async (req: Request, res: Response) => {
-  const { cod } = req.params;
-  try {
-    const result = await sql`SELECT * FROM cursuri WHERE cod = ${cod}`;
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Course not found' });
-    }
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error('Error fetching course:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
 });
 
 app.listen(port, () => {
