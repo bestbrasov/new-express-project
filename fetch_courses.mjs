@@ -1,5 +1,8 @@
-import { sql } from '@vercel/postgres';
+import  { sql } from '@vercel/postgres';
 import axios from 'axios';
+import { config } from 'dotenv';
+
+config({ path: './.env.development.local' });
 
 export async function fetchCourses() {
   console.log('Fetching courses...');
@@ -15,7 +18,7 @@ export async function fetchCourses() {
 
     // Create an array of promises for processing each course
     const promises = cursuri.map(async (cursHtml) => {
-      const curs: any = {};
+      const curs = {};
       const continut = cursHtml.split("</td>");
 
       curs.cod = extractData(continut[0], 'activity=', '"');
@@ -33,10 +36,6 @@ export async function fetchCourses() {
         const appdateString = extractData(event, '<strong>Application until:</strong> ', ' CE').replace('at ', '').trim();
         curs.appdate = new Date(appdateString).getTime();
 
-        // Log appdate values for debugging
-        console.log('Original appdate string:', appdateString);
-        console.log('Parsed appdate timestamp:', curs.appdate);
-
         // Replace invalid appdate with a default value
         if (isNaN(curs.appdate)) {
           console.error(`Invalid appdate value for course ${curs.cod}: ${appdateString}. Using default timestamp 0.`);
@@ -50,25 +49,20 @@ export async function fetchCourses() {
         derep.forEach((month, i) => {
           curs.perioada = curs.perioada.replace(new RegExp(month, 'g'), curep[i]);
         });
+          // Split the string by comma
+        const parts = curs.locatie.split(',');
 
-        // Fetch location details (LBG data)
-        const lbgUrl = `https://best.eu.org/aboutBEST/structure/lbgView.jsp?lbginfo=${extractData(event, '<a href="/aboutBEST/structure/lbgView.jsp?lbginfo=', '">')}`;
-        try {
-          const lbgResponse = await axios.get(lbgUrl);
-          const lbgContent = lbgResponse.data;
+        // Extract city and country
+        curs.oras = parts[0].trim();
+        curs.tara = parts[1]?.trim() || ''; // Handle cases where there might not be a country
 
-          curs.oras = extractData(lbgContent, '<b>University:</b>', '<br/>').split(',').pop().trim();
-          curs.tara = extractData(lbgContent, '<b>University:</b>', '<br/>').split(',').slice(-2, -1)[0].trim();
 
-          // Insert the data into the PostgreSQL table on Vercel
-          if (curs.oras && curs.tara) {
-            await sql`
-              INSERT INTO cursuri (appdate, cod, titlu, tip, pret, descriere, locatie, perioada, oras, tara)
-              VALUES (${curs.appdate}, ${curs.cod}, ${curs.titlu}, ${curs.tip}, ${curs.pret}, ${curs.descriere}, ${curs.locatie}, ${curs.perioada}, ${curs.tara}, ${curs.oras})
-            `;
-          }
-        } catch (error) {
-          console.error(`Error fetching LBG data for course ${curs.cod}:`, error);
+        // Insert the data into the PostgreSQL table on Vercel
+        if (curs.oras && curs.tara) {
+          await sql`
+            INSERT INTO cursuri (appdate, cod, titlu, tip, pret, descriere, locatie, perioada, oras, tara)
+            VALUES (${curs.appdate}, ${curs.cod}, ${curs.titlu}, ${curs.tip}, ${curs.pret}, ${curs.descriere}, ${curs.locatie}, ${curs.perioada}, ${curs.tara}, ${curs.oras})
+          `;
         }
       } catch (error) {
         console.error(`Error fetching event details for course ${curs.cod}:`, error);
@@ -84,11 +78,13 @@ export async function fetchCourses() {
 }
 
 // Helper functions to process HTML
-function extractData(string: string, start: string, end: string) {
+function extractData(string, start, end) {
   const extracted = string.split(start)[1]?.split(end)[0]?.trim();
   return extracted ? extracted : '';
 }
 
-function stripTags(html: string) {
+function stripTags(html) {
   return html.replace(/<\/?[^>]+(>|$)/g, "").trim();
 }
+
+fetchCourses()
