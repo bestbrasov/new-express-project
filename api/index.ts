@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import nodemailer from 'nodemailer';
+// import nodemailer from 'nodemailer';
 
 const app = express();
 const port = 3004;
@@ -18,13 +18,13 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Configure nodemailer with your email service details
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.REACT_APP_EMAIL_USER,
-    pass: process.env.REACT_APP_EMAIL_PASS,
-  },
-});
+// const transporter = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//     user: process.env.REACT_APP_EMAIL_USER,
+//     pass: process.env.REACT_APP_EMAIL_PASS,
+//   },
+// });
 
 // Debugging: Print environment variables to ensure they are loaded correctly
 console.log('Email User:', process.env.REACT_APP_EMAIL_USER);
@@ -46,16 +46,16 @@ app.post('/send-email', (req: Request, res: Response) => {
     text: `Name: ${name}\n Tel: ${tel}\n Email: ${email}\n Message: ${message}`,
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Error sending email:', error);
-      res.status(500).send('Failed to send email');
-    } else {
-      console.log('Email sent: ' + info.response);
-      res.status(200).send('Email sent successfully');
-    }
-  });
-});
+//   transporter.sendMail(mailOptions, (error, info) => {
+//     if (error) {
+//       console.error('Error sending email:', error);
+//       res.status(500).send('Failed to send email');
+//     } else {
+//       console.log('Email sent: ' + info.response);
+//       res.status(200).send('Email sent successfully');
+//     }
+//   });
+ });
 
 // New GET route to test server
 app.get('/status', (req: Request, res: Response) => {
