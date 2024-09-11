@@ -18,7 +18,7 @@ export async function fetchCourses() {
 
     // Create an array of promises for processing each course
     const promises = cursuri.map(async (cursHtml) => {
-      const curs = {};
+      const curs:any = {};
       const continut = cursHtml.split("</td>");
 
       curs.cod = extractData(continut[0], 'activity=', '"');
@@ -53,8 +53,8 @@ export async function fetchCourses() {
         const parts = curs.locatie.split(',');
 
         // Extract city and country
-        curs.oras = parts[0].trim();
-        curs.tara = parts[1]?.trim() || ''; // Handle cases where there might not be a country
+        curs.tara = parts[0].trim();
+        curs.oras = parts[1]?.trim() || ''; // Handle cases where there might not be a country
 
 
         // Insert the data into the PostgreSQL table on Vercel
@@ -78,12 +78,12 @@ export async function fetchCourses() {
 }
 
 // Helper functions to process HTML
-function extractData(string, start, end) {
+function extractData(string: string, start: string, end: string) {
   const extracted = string.split(start)[1]?.split(end)[0]?.trim();
   return extracted ? extracted : '';
 }
 
-function stripTags(html) {
+function stripTags(html: any) {
   return html.replace(/<\/?[^>]+(>|$)/g, "").trim();
 }
 
