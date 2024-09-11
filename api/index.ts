@@ -57,6 +57,11 @@ app.post('/send-email', (req: Request, res: Response) => {
   });
 });
 
+// New GET route to test server
+app.get('/status', (req: Request, res: Response) => {
+  res.status(200).send('Server is running and working correctly');
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
