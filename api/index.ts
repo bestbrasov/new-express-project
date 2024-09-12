@@ -90,7 +90,6 @@ try {
 });
 
 // Route to fetch and insert courses
-export const maxDuration = 40; // This function can run for a maximum of 5 seconds
 app.get('/fetch-courses', async (req, res) => {
     try {
       const result = await fetchCourses();
