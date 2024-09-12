@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import nodemailer from 'nodemailer';
-import { fetchCourses } from '../fetch_courses.ts';
+import { fetchCourses } from '../fetch_courses.js';
 import  {sql}  from '@vercel/postgres';
 
 const app = express();
