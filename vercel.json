@@ -1,13 +1,20 @@
-{ 
-    "version": 2, 
-    "rewrites": [{ "source": "/(.*)", "destination": "/api" }],
-    "crons": [{
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/(.*)", 
+      "destination": "/api"
+    }
+  ],
+  "crons": [
+    {
       "path": "/api/cron",
       "schedule": "0 0 1 * *"
-    }],
-    "functions": [{
-      "/api/*": {
-        "maxDuration": 40
-      }
-    }]
+    }
+  ],
+  "functions": {
+    "api/*": {
+      "maxDuration": 40
+    }
   }
+}
