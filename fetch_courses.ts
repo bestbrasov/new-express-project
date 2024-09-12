@@ -18,7 +18,7 @@ export async function fetchCourses() {
 
     // Create an array of promises for processing each course
     const promises = cursuri.map(async (cursHtml) => {
-      const curs:any = {};
+      const curs: any = {};
       const continut = cursHtml.split("</td>");
 
       curs.cod = extractData(continut[0], 'activity=', '"');
@@ -72,13 +72,14 @@ export async function fetchCourses() {
     // Wait for all course details to be processed
     await Promise.all(promises);
     console.log('All courses processed successfully.');
+    return 1;
   } catch (err) {
     console.error('Error fetching or inserting courses:', err);
   }
 }
 
 // Helper functions to process HTML
-function extractData(string: string, start: string, end: string) {
+function extractData(string: any, start: any, end: any) {
   const extracted = string.split(start)[1]?.split(end)[0]?.trim();
   return extracted ? extracted : '';
 }
