@@ -5,16 +5,5 @@
       "source": "/(.*)", 
       "destination": "/api"
     }
-  ],
-  "crons": [
-    {
-      "path": "/api/cron",
-      "schedule": "30 18 * * *"
-    }
-  ],
-  "functions": {
-    "api/*": {
-      "maxDuration": 60
-    }
-  }
+  ]
 }
