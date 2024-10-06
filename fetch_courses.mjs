@@ -18,7 +18,7 @@ export async function fetchCourses() {
 
     // Create an array of promises for processing each course
     const promises = cursuri.map(async (cursHtml) => {
-      const curs: any = {};
+      const curs = {};
       const continut = cursHtml.split("</td>");
 
       curs.cod = extractData(continut[0], 'activity=', '"');
@@ -79,12 +79,12 @@ export async function fetchCourses() {
 }
 
 // Helper functions to process HTML
-function extractData(string: any, start: any, end: any) {
+function extractData(string, start, end) {
   const extracted = string.split(start)[1]?.split(end)[0]?.trim();
   return extracted ? extracted : '';
 }
 
-function stripTags(html: any) {
+function stripTags(html) {
   return html.replace(/<\/?[^>]+(>|$)/g, "").trim();
 }
 

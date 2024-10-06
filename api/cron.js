@@ -1,4 +1,4 @@
-import { fetchCourses } from '../fetch_courses.js';
+import { fetchCourses } from '../fetch_courses.mjs';
 
 export default async function handler(req, res) {
   try {
